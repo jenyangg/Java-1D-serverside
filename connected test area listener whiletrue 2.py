@@ -146,29 +146,30 @@ def cuisine_filter(alluserprefs,glob_list):
         for session in glob_list:
             for i in range (1, len(session)-1,1):
                 session_name = session[0]
-                shops_dict = session[1]
-                print(shops_dict)
-                for shop in list(shop_dict.keys()):
-                    score = 1
-                    print("watisurnem", shop)
-                    shop_cuisine = shop_dict[shop]['cuisine']
-                    print("shop_cuisine",shop_cuisine)
-                    if type(shop_cuisine) == list:
-                        for damnitferrell in shop_cuisine:
-                            print("damnit ferrell...",damnitferrell)
-                            if damnitferrell in valuedicti:
+                for item in session:
+                    if type(item)!= str:
+                        score = 1
+                        shop_nemu = list(item.keys())[0]
+                        print("watisurnem", shop_nemu)
+                        print(item)
+                        shop_cuisine = item[shop_nemu]["cuisine"]
+                        print("shop_cuisine",shop_cuisine)
+                        if type(shop_cuisine) == list:
+                            for damnitferrell in shop_cuisine:
+                                print("damnit ferrell...",damnitferrell)
+                                if damnitferrell in valuedicti:
+                                    print("morescore!")
+                                    score = score * valuedicti[damnitferrell]
+                                    print("score", score)
+                                else:
+                                    print("this shouldnt be happunin")
+                        else:
+                            if shop_cuisine in valuedicti:
                                 print("morescore!")
-                                score = score * valuedicti[damnitferrell]
-                                print("score", score)
-                            else:
-                                print("this shouldnt be happunin")
-                    else:
-                        if shop_cuisine in valuedicti:
-                            print("morescore!")
-                            score = score * valuedicti[shop_cuisine]
-                            print("score",score)
-                    final_list.append((score,shop))
-            final_list.sort(reverse = True)
+                                score = score * valuedicti[shop_cuisine]
+                                print("score",score)
+                        final_list.append((score,item))
+                final_list.sort(key=lambda x:x[0],reverse = True)
         
                     
 # =============================================================================
@@ -458,7 +459,7 @@ try:
                 if (len(list(k[updated_session_name]["cuisineList"]))-1) == len(inter2[0]):
                     print("all prefs!, number of users:", (len(list(k[updated_session_name]["cuisineList"]))))
                     final_results = cuisine_filter(k,glob_shops)
-                    print(final_results)
+                    print("final_results",final_results)
                  
 #            Q3.put(updated_cuisineLists)
 #==============================================================================
